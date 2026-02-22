@@ -151,9 +151,7 @@ def _resolve_catalog_dir(preferred: Path) -> Path:
     candidates = [
         preferred,
         repo_root / "data" / "pokemontcg" / "csv",
-        repo_root / "wxo" / "tools" / "data",
         Path("/app/data/pokemontcg/csv"),
-        Path("/app/wxo/tools/data"),
     ]
     seen: set[str] = set()
     for candidate in candidates:
