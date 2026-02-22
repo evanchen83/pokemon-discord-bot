@@ -71,12 +71,13 @@ For full local stack (Postgres + shards + monitoring):
 
 ## PokeAgent Setup
 
-1. Create/get your Orchestrate account and API credentials: https://www.ibm.com/products/watsonx-orchestrate
-2. Set these in `.env`:
+1. Create/get your Orchestrate account: https://www.ibm.com/products/watsonx-orchestrate
+2. Get ADK environment credentials: https://developer.watson-orchestrate.ibm.com/environment/initiate_environment
+3. Set these in `.env`:
    - `WXO_BASE_URL`
    - `WXO_API_KEY`
    - `WXO_AGENT_NAME` (default: `pokemon_tcg_agent`)
-3. Import bot resources (tools + knowledge base + agent):
+4. Import bot resources (tools + knowledge base + agent):
    - `scripts/import_wxo_from_env.sh all`
 
 If `WXO_BASE_URL` or `WXO_API_KEY` is missing/invalid, `/pokeagent` will be unavailable.
