@@ -55,6 +55,15 @@ For full local stack (Postgres + shards + monitoring):
   - `discord_command_duration_seconds{command,outcome}`
   - `discord_open_pack_set_total{set_name}`
 
+## Screenshots
+
+Use `docs/screenshots/` for all Discord/Grafana screenshots.
+
+- Guide: `docs/screenshots/README.md`
+- Caption/order manifest: `docs/screenshots/manifest.md`
+
+After you drop files there, tell me and I will format the final README gallery.
+
 ## Security Notes
 
 - Never commit `.env` or credential files.
