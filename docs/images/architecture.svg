@@ -1,69 +1,98 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="620" viewBox="0 0 1120 620" role="img" aria-label="Pokemon Discord Bot architecture">
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="780" viewBox="0 0 1360 780" role="img" aria-label="Pokemon Discord Bot architecture using IBM Carbon style">
   <defs>
     <style>
-      .bg { fill: #0f172a; }
-      .panel { fill: #1e293b; stroke: #334155; stroke-width: 2; rx: 12; ry: 12; }
-      .title { fill: #e2e8f0; font: 700 22px Arial, sans-serif; }
-      .label { fill: #cbd5e1; font: 600 16px Arial, sans-serif; }
-      .small { fill: #94a3b8; font: 500 13px Arial, sans-serif; }
-      .accent { fill: #22d3ee; }
-      .line { stroke: #64748b; stroke-width: 2.5; marker-end: url(#arrow); }
+      .bg { fill: #161616; }
+      .panel { fill: #262626; stroke: #525252; stroke-width: 1.5; rx: 10; ry: 10; }
+      .panel-accent { fill: #202020; stroke: #0f62fe; stroke-width: 2; rx: 10; ry: 10; }
+      .title { fill: #f4f4f4; font: 600 26px 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.2px; }
+      .subtitle { fill: #c6c6c6; font: 400 13px 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; }
+      .h { fill: #f4f4f4; font: 600 18px 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; }
+      .t { fill: #dde1e6; font: 400 14px 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; }
+      .k { fill: #8d8d8d; font: 400 12px 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; }
+      .tag { fill: #393939; stroke: #6f6f6f; stroke-width: 1; rx: 6; ry: 6; }
+      .tagt { fill: #c6c6c6; font: 500 11px 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; }
+      .line { stroke: #78a9ff; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .line2 { stroke: #a6c8ff; stroke-width: 2; fill: none; marker-end: url(#arrow2); }
+      .dot { fill: #0f62fe; }
+      .dot2 { fill: #42be65; }
     </style>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L10,3 L0,6 z" fill="#64748b" />
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#78a9ff" />
+    </marker>
+    <marker id="arrow2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#a6c8ff" />
     </marker>
   </defs>
 
-  <rect class="bg" x="0" y="0" width="1120" height="620"/>
-  <text class="title" x="40" y="44">Pokemon Discord Bot - Local Sharded Architecture</text>
+  <rect class="bg" x="0" y="0" width="1360" height="780" />
 
-  <rect class="panel" x="40" y="90" width="230" height="120"/>
-  <text class="label" x="58" y="132">Discord API</text>
-  <text class="small" x="58" y="158">Gateway + Slash Commands</text>
+  <text class="title" x="42" y="52">Pokemon Discord Bot Architecture</text>
+  <text class="subtitle" x="42" y="76">Sharded Discord runtime + shared Postgres state + observability stack</text>
 
-  <rect class="panel" x="340" y="70" width="270" height="155"/>
-  <text class="label" x="360" y="108">discord-bot-shard-0</text>
-  <text class="small" x="360" y="134">Discord commands + embeds</text>
-  <text class="small" x="360" y="154">Metrics :9108</text>
-  <circle class="accent" cx="575" cy="95" r="7"/>
+  <rect class="panel" x="42" y="120" width="255" height="132" />
+  <text class="h" x="62" y="158">Discord API</text>
+  <text class="t" x="62" y="184">Gateway + slash command traffic</text>
+  <rect class="tag" x="62" y="204" width="126" height="24" />
+  <text class="tagt" x="73" y="220">External service</text>
 
-  <rect class="panel" x="340" y="255" width="270" height="155"/>
-  <text class="label" x="360" y="293">discord-bot-shard-1</text>
-  <text class="small" x="360" y="319">Discord commands + embeds</text>
-  <text class="small" x="360" y="339">Metrics :9109</text>
-  <circle class="accent" cx="575" cy="280" r="7"/>
+  <rect class="panel-accent" x="358" y="106" width="330" height="184" />
+  <text class="h" x="380" y="145">discord-bot-shard-0</text>
+  <text class="t" x="380" y="173">Commands: /open_pack, /catch, /pokebox, /pokeagent</text>
+  <text class="t" x="380" y="197">Metrics endpoint: :9108</text>
+  <text class="k" x="380" y="224">DISCORD_SHARD_IDS=0, DISCORD_SYNC_LEADER=true</text>
+  <circle class="dot2" cx="662" cy="128" r="6" />
 
-  <rect class="panel" x="700" y="70" width="190" height="120"/>
-  <text class="label" x="720" y="112">Postgres</text>
-  <text class="small" x="720" y="138">thread_state</text>
-  <text class="small" x="720" y="156">pack/catch usage + history</text>
+  <rect class="panel-accent" x="358" y="322" width="330" height="184" />
+  <text class="h" x="380" y="361">discord-bot-shard-1</text>
+  <text class="t" x="380" y="389">Commands: /open_pack, /catch, /pokebox, /pokeagent</text>
+  <text class="t" x="380" y="413">Metrics endpoint: :9109 (mapped to :9108 in container)</text>
+  <text class="k" x="380" y="440">DISCORD_SHARD_IDS=1, DISCORD_SYNC_LEADER=false</text>
+  <circle class="dot2" cx="662" cy="344" r="6" />
 
-  <rect class="panel" x="700" y="220" width="190" height="120"/>
-  <text class="label" x="720" y="262">Liquibase</text>
-  <text class="small" x="720" y="288">db-init on startup</text>
+  <rect class="panel" x="750" y="106" width="280" height="184" />
+  <text class="h" x="772" y="145">Postgres</text>
+  <text class="t" x="772" y="173">Shared state across shards:</text>
+  <text class="t" x="772" y="197">- thread_state</text>
+  <text class="t" x="772" y="221">- pack_openings, pack_cards</text>
+  <text class="t" x="772" y="245">- open_pack_command_usage</text>
+  <text class="t" x="772" y="269">- pokemon_catches, catch_command_usage</text>
 
-  <rect class="panel" x="700" y="370" width="190" height="120"/>
-  <text class="label" x="720" y="412">watsonx Orchestrate</text>
-  <text class="small" x="720" y="438">/pokeagent runtime calls</text>
+  <rect class="panel" x="750" y="322" width="280" height="114" />
+  <text class="h" x="772" y="360">Liquibase db-init</text>
+  <text class="t" x="772" y="386">Applies changelogs on startup</text>
+  <text class="k" x="772" y="410">db/changelog/db.changelog-master.xml</text>
 
-  <rect class="panel" x="940" y="120" width="140" height="110"/>
-  <text class="label" x="962" y="162">Prometheus</text>
-  <text class="small" x="962" y="186">:9090</text>
+  <rect class="panel" x="750" y="468" width="280" height="114" />
+  <text class="h" x="772" y="506">watsonx Orchestrate</text>
+  <text class="t" x="772" y="532">Runtime agent calls for /pokeagent</text>
+  <text class="k" x="772" y="556">Dynamic availability checks before command run</text>
 
-  <rect class="panel" x="940" y="300" width="140" height="110"/>
-  <text class="label" x="974" y="342">Grafana</text>
-  <text class="small" x="966" y="366">:3000 dashboards</text>
+  <rect class="panel" x="1082" y="166" width="236" height="134" />
+  <text class="h" x="1104" y="204">Prometheus</text>
+  <text class="t" x="1104" y="230">Scrapes both shard metrics</text>
+  <text class="t" x="1104" y="254">Port: :9090</text>
 
-  <line class="line" x1="270" y1="140" x2="340" y2="130"/>
-  <line class="line" x1="270" y1="160" x2="340" y2="300"/>
+  <rect class="panel" x="1082" y="356" width="236" height="134" />
+  <text class="h" x="1104" y="394">Grafana</text>
+  <text class="t" x="1104" y="420">Dashboards for command usage</text>
+  <text class="t" x="1104" y="444">Port: :3000</text>
 
-  <line class="line" x1="610" y1="120" x2="700" y2="120"/>
-  <line class="line" x1="610" y1="300" x2="700" y2="130"/>
-  <line class="line" x1="610" y1="310" x2="700" y2="430"/>
+  <path class="line" d="M297 166 L358 166" />
+  <path class="line" d="M297 204 L358 384" />
 
-  <line class="line" x1="610" y1="150" x2="940" y2="170"/>
-  <line class="line" x1="610" y1="330" x2="940" y2="170"/>
-  <line class="line" x1="1080" y1="230" x2="1080" y2="300"/>
+  <path class="line" d="M688 166 L750 166" />
+  <path class="line" d="M688 384 L750 204" />
 
-  <text class="small" x="40" y="574">Two shards share one Postgres state. Metrics are scraped per shard and visualized in Grafana.</text>
+  <path class="line2" d="M688 420 L750 522" />
+
+  <path class="line" d="M688 220 L1082 220" />
+  <path class="line" d="M688 430 L1082 250" />
+  <path class="line2" d="M1318 300 L1318 356" />
+
+  <circle class="dot" cx="523" cy="166" r="4" />
+  <circle class="dot" cx="523" cy="384" r="4" />
+  <circle class="dot" cx="890" cy="220" r="4" />
+  <circle class="dot" cx="1200" cy="220" r="4" />
+
+  <text class="k" x="42" y="734">Carbon-inspired palette: Gray 100 background, Gray 90 surfaces, Blue 60 accents, IBM Plex Sans typography.</text>
 </svg>
