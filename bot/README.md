@@ -63,7 +63,6 @@ uv run python bot/discord_wxo_bot.py
 - Set `WO_INSTANCE` + `WO_API_KEY` in `.env`.
 - Bot auth uses API key header (`WO_API_KEY`).
 - `WO_LOCAL_USERNAME` / `WO_LOCAL_PASSWORD` are ignored in cloud mode.
-- Advanced override (optional): set `WO_RUNTIME_INSTANCE` / `WO_RUNTIME_API_KEY` only if bot runtime target should differ from default cloud target.
 
 ### Self-hosted runtime (Local ADK)
 

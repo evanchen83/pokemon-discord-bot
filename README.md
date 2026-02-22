@@ -84,7 +84,6 @@ For full local stack (Postgres + shards + monitoring):
 - Auth behavior:
   - bot uses API key auth (`WO_API_KEY`)
   - `WO_LOCAL_USERNAME` / `WO_LOCAL_PASSWORD` are ignored
-- Advanced override (optional): set `WO_RUNTIME_INSTANCE` / `WO_RUNTIME_API_KEY` only if bot runtime target should differ from default cloud target.
 
 ### Self-hosted runtime (Local ADK)
 
