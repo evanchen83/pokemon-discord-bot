@@ -27,6 +27,7 @@ Central location for all watsonx Orchestrate deployment YAML files.
 
 Use the project helper wrapper to import/update resources using `.env` credentials.
 It activates `WO_ENV` first (defaults to `local`), then imports resources into that active environment.
+For cloud ADK environments, add/create that environment in ADK before activating it. Activating without adding typically only works for the default local environment.
 
 ```bash
 scripts/import_wxo_from_env.sh all

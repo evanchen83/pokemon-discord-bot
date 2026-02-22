@@ -61,12 +61,13 @@ uv run python bot/discord_wxo_bot.py
 ### Cloud-hosted WXO (Production/Default)
 
 - Set `WO_INSTANCE` + `WO_API_KEY` in `.env`.
-- Optionally set `WO_RUNTIME_INSTANCE` / `WO_RUNTIME_API_KEY` if bot runtime target should differ from CLI/import target.
-- Bot auth uses API key header (`WO_RUNTIME_API_KEY` or fallback `WO_API_KEY`).
+- Bot auth uses API key header (`WO_API_KEY`).
 - `WO_LOCAL_USERNAME` / `WO_LOCAL_PASSWORD` are ignored in cloud mode.
+- Advanced override (optional): set `WO_RUNTIME_INSTANCE` / `WO_RUNTIME_API_KEY` only if bot runtime target should differ from default cloud target.
 
 ### Self-hosted runtime (Local ADK)
 
+- Keep cloud vars (`WO_INSTANCE`, `WO_API_KEY`) for script/import workflows and cloud-backed AI inference access.
 - Point bot runtime to local with `WO_RUNTIME_INSTANCE=http://<your-local-runtime>`.
 - Set `WO_LOCAL_USERNAME` + `WO_LOCAL_PASSWORD` for local token login.
 - Bot gets JWT from `/auth/token` in this mode.
@@ -75,6 +76,7 @@ uv run python bot/discord_wxo_bot.py
 ### Script-only env
 
 - `WO_ENV` is used by import scripts, not by bot runtime auth.
+- For cloud ADK environments: add/create the environment in ADK first, then activate it. Activating without adding works only for the default local environment.
 - App-command sync is manual by default. Use owner command (mention-prefix):
   - `@Bot sync` or `@Bot sync global`
   - `@Bot sync guild`

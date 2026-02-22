@@ -81,16 +81,14 @@ For full local stack (Postgres + shards + monitoring):
   - `WO_INSTANCE`
   - `WO_API_KEY`
   - `WO_AGENT_NAME` (default: `pokemon_tcg_agent`)
-- Optional bot-only override:
-  - `WO_RUNTIME_INSTANCE`
-  - `WO_RUNTIME_API_KEY`
 - Auth behavior:
-  - bot uses API key auth (`WO_RUNTIME_API_KEY` or fallback `WO_API_KEY`)
+  - bot uses API key auth (`WO_API_KEY`)
   - `WO_LOCAL_USERNAME` / `WO_LOCAL_PASSWORD` are ignored
+- Advanced override (optional): set `WO_RUNTIME_INSTANCE` / `WO_RUNTIME_API_KEY` only if bot runtime target should differ from default cloud target.
 
 ### Self-hosted runtime (Local ADK)
 
-- Keep cloud vars (`WO_INSTANCE`, `WO_API_KEY`) for script/import workflows.
+- Keep cloud vars (`WO_INSTANCE`, `WO_API_KEY`) for script/import workflows and cloud-backed AI inference access.
 - Point bot runtime to local:
   - `WO_RUNTIME_INSTANCE=http://<your-local-runtime>`
 - Set local runtime auth:
@@ -104,6 +102,7 @@ For full local stack (Postgres + shards + monitoring):
    - `scripts/import_wxo_from_env.sh all`
    - this script activates `WO_ENV` first, then imports tools, KB, and agent
    - `WO_ENV` (default: `local`) is used by these scripts, not by bot runtime auth
+   - For cloud ADK environments: add/create the environment in ADK first, then activate it. Activating without adding works only for the default local environment.
 
 If required credentials are missing/invalid for the configured runtime target, `/pokeagent` will be unavailable.
 
