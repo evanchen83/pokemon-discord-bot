@@ -17,6 +17,7 @@ Modes:
 Options:
   --env <name>          Activate an existing ADK environment before import
   --tool-file <path>    Override tool file path
+  --requirements <path> Override requirements file for tool import
   --kb-file <path>      Override knowledge base manifest path
   --agent-file <path>   Override agent manifest path
   -h, --help            Show this help
@@ -35,9 +36,8 @@ ENV_NAME=""
 TOOL_FILE="$WXO_ROOT/tools/pokemon_tcg_stats_tools.py"
 KB_FILE="$WXO_ROOT/knowledge-bases/pokemon-tcg-kb.yaml"
 AGENT_FILE="$WXO_ROOT/agents/pokemon-tcg-agent.yaml"
-REQ_FILE=""
+REQ_FILE="$WXO_ROOT/tools/requirements.txt"
 PACKAGE_ROOT="$WXO_ROOT/tools"
-TEMP_REQ_FILE=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -51,6 +51,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --tool-file)
       TOOL_FILE="${2:-}"
+      shift 2
+      ;;
+    --requirements)
+      REQ_FILE="${2:-}"
       shift 2
       ;;
     --kb-file)
@@ -83,13 +87,6 @@ run_cli() {
   "${CLI[@]}" "$@"
 }
 
-cleanup() {
-  if [[ -n "$TEMP_REQ_FILE" && -f "$TEMP_REQ_FILE" ]]; then
-    rm -f "$TEMP_REQ_FILE"
-  fi
-}
-trap cleanup EXIT
-
 check_file() {
   local f="$1"
   if [[ ! -f "$f" ]]; then
@@ -100,19 +97,8 @@ check_file() {
 
 import_tools() {
   check_file "$TOOL_FILE"
-  if command -v uv >/dev/null 2>&1 && [[ -f "$REPO_ROOT/pyproject.toml" && -f "$REPO_ROOT/uv.lock" ]]; then
-    TEMP_REQ_FILE="$(mktemp)"
-    (
-      cd "$REPO_ROOT"
-      uv export --format requirements-txt --no-dev --no-hashes > "$TEMP_REQ_FILE"
-    )
-    REQ_FILE="$TEMP_REQ_FILE"
-  elif [[ -f "$REPO_ROOT/requirements.txt" ]]; then
+  if [[ ! -f "$REQ_FILE" && -f "$REPO_ROOT/requirements.txt" ]]; then
     REQ_FILE="$REPO_ROOT/requirements.txt"
-  else
-    echo "No dependency manifest found for tool import." >&2
-    echo "Install uv and ensure pyproject.toml + uv.lock are present, or provide requirements.txt." >&2
-    exit 1
   fi
   check_file "$REQ_FILE"
   echo "Importing tools from: $TOOL_FILE"
