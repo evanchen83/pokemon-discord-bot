@@ -69,6 +69,18 @@ For full local stack (Postgres + shards + monitoring):
 - `/grantpokemon user:<user> count:<n>` or `$grantpokemon` (restricted)
 - `@Bot sync [global|guild|copy|clear]` (owner-only helper)
 
+## PokeAgent Setup
+
+`/pokeagent` requires access to a watsonx Orchestrate instance.
+
+Set these in `.env`:
+
+- `WO_INSTANCE` (or `WXO_BASE_URL`) to your Orchestrate URL
+- `WO_API_KEY` (or `WXO_API_KEY`) for that instance
+- `WXO_AGENT_NAME` (default: `pokemon_tcg_agent`)
+
+If these are missing or invalid, `/pokeagent` will be unavailable while the rest of the bot commands still work.
+
 ## Monitoring
 
 - Prometheus: `http://localhost:9090`
