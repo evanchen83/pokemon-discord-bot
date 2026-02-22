@@ -25,10 +25,10 @@ Central location for all watsonx Orchestrate deployment YAML files.
 
 ## Import Workflow
 
-Use the project helper script to import/update resources into the active ADK environment.
+Use the project helper wrapper to import/update resources using `.env` credentials.
 
 ```bash
-scripts/import_wxo_resources.sh
+scripts/import_wxo_from_env.sh all
 ```
 
 This imports in order:
@@ -39,8 +39,15 @@ This imports in order:
 Useful variants:
 
 ```bash
-scripts/import_wxo_resources.sh tools
-scripts/import_wxo_resources.sh kb
-scripts/import_wxo_resources.sh agent
+scripts/import_wxo_from_env.sh tools
+scripts/import_wxo_from_env.sh kb
+scripts/import_wxo_from_env.sh agent
+scripts/import_wxo_from_env.sh all --env local
+scripts/import_wxo_from_env.sh all --no-activate
+```
+
+Direct/manual script (if you want to skip `.env` wrapper):
+
+```bash
 scripts/import_wxo_resources.sh all --env local
 ```

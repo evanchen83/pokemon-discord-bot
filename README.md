@@ -81,6 +81,29 @@ Set these in `.env`:
 
 If these are missing or invalid, `/pokeagent` will be unavailable while the rest of the bot commands still work.
 
+## Importing Agent, Tools, and KB
+
+After your `.env` is configured with Orchestrate credentials, import resources to your target Orchestrate environment:
+
+1. Ensure env is set:
+   - `WO_INSTANCE` or `WXO_BASE_URL`
+   - `WO_API_KEY` or `WXO_API_KEY`
+   - Optional: `WXO_ADK_ENV` (your ADK env name to auto-activate)
+2. Run import:
+   - `scripts/import_wxo_from_env.sh all`
+
+Useful variants:
+
+- `scripts/import_wxo_from_env.sh tools`
+- `scripts/import_wxo_from_env.sh kb`
+- `scripts/import_wxo_from_env.sh agent`
+- `scripts/import_wxo_from_env.sh all --env <your-adk-env>`
+- `scripts/import_wxo_from_env.sh all --no-activate`
+
+Advanced/manual script (direct):
+
+- `scripts/import_wxo_resources.sh all --env <your-adk-env>`
+
 ## Monitoring
 
 - Prometheus: `http://localhost:9090`
