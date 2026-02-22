@@ -34,12 +34,12 @@ Optional:
 - `WO_AGENT_NAME` (default: `pokemon_tcg_agent`)
 - `WO_AGENT_ID` (optional override; if set, skips agent-name lookup)
 - `THREAD_TTL_MINUTES` (default: `10`)
-- `WO_INSTANCE`
-- `WO_API_KEY`
+- `WO_INSTANCE` (cloud runtime base URL; used by default)
+- `WO_API_KEY` (cloud runtime API key; used by default)
 - `WO_RUNTIME_INSTANCE` (optional bot-only target override; defaults to `WO_INSTANCE`)
 - `WO_RUNTIME_API_KEY` (optional bot-only key override; defaults to `WO_API_KEY`)
-- `WO_LOCAL_USERNAME` (used for local runtime login; default `wxo.archer@ibm.com`)
-- `WO_LOCAL_PASSWORD` (used for local runtime login; default `watsonx`)
+- `WO_LOCAL_USERNAME` (only used when runtime target is local; default `wxo.archer@ibm.com`)
+- `WO_LOCAL_PASSWORD` (only used when runtime target is local; default `watsonx`)
 - `PACK_PG_DSN` (Postgres DSN for pack history persistence)
 - `THREAD_PG_DSN` (optional; defaults to `PACK_PG_DSN` for thread context persistence)
 - `DISCORD_SHARD_COUNT` (optional total shard count; when omitted discord.py auto-detects)
@@ -58,9 +58,10 @@ uv run python bot/discord_wxo_bot.py
 
 ## Notes
 
-- In Docker, set `WO_INSTANCE` + `WO_API_KEY` in `.env`.
-- If the bot should hit a different target than CLI/import (for example local runtime), set `WO_RUNTIME_INSTANCE` (and optionally `WO_RUNTIME_API_KEY`).
-- For local runtime targets, set `WO_LOCAL_USERNAME` + `WO_LOCAL_PASSWORD` if your local server uses non-default credentials.
+- In Docker/prod, set `WO_INSTANCE` + `WO_API_KEY` in `.env` (cloud mode).
+- If the bot should hit a different target than CLI/import, set `WO_RUNTIME_INSTANCE` (and optionally `WO_RUNTIME_API_KEY`).
+- Cloud mode auth: bot uses API key header (`WO_RUNTIME_API_KEY` or fallback `WO_API_KEY`).
+- Local mode auth (`WO_RUNTIME_INSTANCE` points to localhost/local runtime): bot uses `/auth/token` with `WO_LOCAL_USERNAME` + `WO_LOCAL_PASSWORD`; API key is not used for bot request auth in this mode.
 - App-command sync is manual by default. Use owner command (mention-prefix):
   - `@Bot sync` or `@Bot sync global`
   - `@Bot sync guild`

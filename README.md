@@ -74,17 +74,25 @@ For full local stack (Postgres + shards + monitoring):
 1. Create/get your Orchestrate account: https://www.ibm.com/products/watsonx-orchestrate
 2. Get ADK environment credentials: https://developer.watson-orchestrate.ibm.com/environment/initiate_environment
 3. Set these in `.env`:
-   - `WO_INSTANCE`
-   - `WO_API_KEY`
-   - `WO_AGENT_NAME` (default: `pokemon_tcg_agent`)
-   - `WO_ENV` (default: `local`)
-   - Optional runtime override for bot only:
+   - Always set for cloud/runtime defaults:
+     - `WO_INSTANCE`
+     - `WO_API_KEY`
+     - `WO_AGENT_NAME` (default: `pokemon_tcg_agent`)
+   - `WO_ENV` (default: `local`) is used by import scripts (for example `scripts/import_wxo_from_env.sh`), not by bot runtime auth.
+   - Optional bot-only target override:
      - `WO_RUNTIME_INSTANCE`
      - `WO_RUNTIME_API_KEY`
-   - Optional local runtime auth (used when `WO_RUNTIME_INSTANCE` points to local):
+   - Optional local runtime auth (only when bot runtime target is local):
      - `WO_LOCAL_USERNAME` (default: `wxo.archer@ibm.com`)
      - `WO_LOCAL_PASSWORD` (default: `watsonx`)
-4. Import bot resources (tools + knowledge base + agent):
+4. Runtime auth behavior:
+   - Cloud mode (`WO_RUNTIME_INSTANCE` unset, or points to cloud):
+     - bot uses API key auth (`WO_RUNTIME_API_KEY` or fallback `WO_API_KEY`)
+     - local username/password are ignored
+   - Local mode (`WO_RUNTIME_INSTANCE` points to localhost/local runtime):
+     - bot logs in via `/auth/token` using `WO_LOCAL_USERNAME` + `WO_LOCAL_PASSWORD`
+     - API key is not used for bot request auth in this mode
+5. Import bot resources (tools + knowledge base + agent):
    - `scripts/import_wxo_from_env.sh all`
    - this script activates `WO_ENV` first, then imports tools, KB, and agent
 
