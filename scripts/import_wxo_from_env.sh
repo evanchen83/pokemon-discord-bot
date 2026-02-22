@@ -73,15 +73,15 @@ set -a
 source "$ENV_FILE"
 set +a
 
-INSTANCE_URL="${WXO_BASE_URL:-${WO_INSTANCE:-}}"
-API_KEY="${WXO_API_KEY:-${WO_API_KEY:-}}"
+INSTANCE_URL="${WXO_BASE_URL:-}"
+API_KEY="${WXO_API_KEY:-}"
 
 if [[ -z "${INSTANCE_URL}" ]]; then
-  echo "Missing WXO_BASE_URL/WO_INSTANCE in env file: $ENV_FILE" >&2
+  echo "Missing WXO_BASE_URL in env file: $ENV_FILE" >&2
   exit 1
 fi
 if [[ -z "${API_KEY}" ]]; then
-  echo "Missing WXO_API_KEY/WO_API_KEY in env file: $ENV_FILE" >&2
+  echo "Missing WXO_API_KEY in env file: $ENV_FILE" >&2
   exit 1
 fi
 

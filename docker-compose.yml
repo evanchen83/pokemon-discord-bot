@@ -52,9 +52,9 @@ services:
       WXO_AGENT_NAME: ${WXO_AGENT_NAME:-pokemon_tcg_agent}
       WXO_AGENT_ID: ${WXO_AGENT_ID:-}
       THREAD_TTL_MINUTES: ${THREAD_TTL_MINUTES:-10}
-      # For cloud WXO, these are expected in .env already
-      WXO_BASE_URL: ${WXO_BASE_URL:-${WO_INSTANCE}}
-      WXO_API_KEY: ${WXO_API_KEY:-${WO_API_KEY}}
+      # WXO credentials
+      WXO_BASE_URL: ${WXO_BASE_URL:-}
+      WXO_API_KEY: ${WXO_API_KEY:-}
       PACK_PG_DSN: ${PACK_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       THREAD_PG_DSN: ${THREAD_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       DISCORD_SHARD_COUNT: 2
@@ -85,9 +85,9 @@ services:
       WXO_AGENT_NAME: ${WXO_AGENT_NAME:-pokemon_tcg_agent}
       WXO_AGENT_ID: ${WXO_AGENT_ID:-}
       THREAD_TTL_MINUTES: ${THREAD_TTL_MINUTES:-10}
-      # For cloud WXO, these are expected in .env already
-      WXO_BASE_URL: ${WXO_BASE_URL:-${WO_INSTANCE}}
-      WXO_API_KEY: ${WXO_API_KEY:-${WO_API_KEY}}
+      # WXO credentials
+      WXO_BASE_URL: ${WXO_BASE_URL:-}
+      WXO_API_KEY: ${WXO_API_KEY:-}
       PACK_PG_DSN: ${PACK_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       THREAD_PG_DSN: ${THREAD_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       DISCORD_SHARD_COUNT: 2

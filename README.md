@@ -71,44 +71,15 @@ For full local stack (Postgres + shards + monitoring):
 
 ## PokeAgent Setup
 
-`/pokeagent` requires access to a watsonx Orchestrate instance.
-
-Set these in `.env`:
-
-- `WO_INSTANCE` (or `WXO_BASE_URL`) to your Orchestrate URL
-- `WO_API_KEY` (or `WXO_API_KEY`) for that instance
-- `WXO_AGENT_NAME` (default: `pokemon_tcg_agent`)
-
-If these are missing or invalid, `/pokeagent` will be unavailable while the rest of the bot commands still work.
-
-## Importing Agent, Tools, and KB
-
-After your `.env` is configured with Orchestrate credentials, import resources to your target Orchestrate environment:
-
-1. Ensure env is set:
-   - `WO_INSTANCE` or `WXO_BASE_URL`
-   - `WO_API_KEY` or `WXO_API_KEY`
-   - Optional: `WXO_ADK_ENV` (your ADK env name to auto-activate)
-2. Run import:
+1. Create/get your Orchestrate account and API credentials: https://www.ibm.com/products/watsonx-orchestrate
+2. Set these in `.env`:
+   - `WXO_BASE_URL`
+   - `WXO_API_KEY`
+   - `WXO_AGENT_NAME` (default: `pokemon_tcg_agent`)
+3. Import bot resources (tools + knowledge base + agent):
    - `scripts/import_wxo_from_env.sh all`
 
-Useful variants:
-
-- `scripts/import_wxo_from_env.sh tools`
-- `scripts/import_wxo_from_env.sh kb`
-- `scripts/import_wxo_from_env.sh agent`
-- `scripts/import_wxo_from_env.sh all --env <your-adk-env>`
-- `scripts/import_wxo_from_env.sh all --no-activate`
-
-Advanced/manual script (direct):
-
-- `scripts/import_wxo_resources.sh all --env <your-adk-env>`
-
-ADK best-practice notes:
-
-- Add and activate a named ADK environment first (for example: `orchestrate env add -n dev -u <instance-url> --type mcsp --activate`).
-- Keep imports pointed at one active environment; ADK import/list/remove commands target the active env.
-- For on-prem auth, use either API key or username/password (not both at once).
+If `WXO_BASE_URL` or `WXO_API_KEY` is missing/invalid, `/pokeagent` will be unavailable.
 
 ## Monitoring
 

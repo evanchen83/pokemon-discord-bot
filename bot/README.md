@@ -31,8 +31,8 @@ Optional:
 - `WXO_AGENT_NAME` (default: `pokemon_tcg_agent`)
 - `WXO_AGENT_ID` (optional override; if set, skips agent-name lookup)
 - `THREAD_TTL_MINUTES` (default: `10`)
-- `WXO_BASE_URL` (fallbacks to `WO_INSTANCE`)
-- `WXO_API_KEY` (fallbacks to `WO_API_KEY`)
+- `WXO_BASE_URL`
+- `WXO_API_KEY`
 - `PACK_PG_DSN` (Postgres DSN for pack history persistence)
 - `THREAD_PG_DSN` (optional; defaults to `PACK_PG_DSN` for thread context persistence)
 - `DISCORD_SHARD_COUNT` (optional total shard count; when omitted discord.py auto-detects)
@@ -51,7 +51,7 @@ uv run python bot/discord_wxo_bot.py
 
 ## Notes
 
-- In Docker, set `WXO_BASE_URL` + `WXO_API_KEY` (or `WO_INSTANCE` + `WO_API_KEY`) in `.env`.
+- In Docker, set `WXO_BASE_URL` + `WXO_API_KEY` in `.env`.
 - Outside Docker, if explicit WXO vars are missing, the bot falls back to active ADK env credentials.
 - App-command sync is manual by default. Use owner command (mention-prefix):
   - `@Bot sync` or `@Bot sync global`
