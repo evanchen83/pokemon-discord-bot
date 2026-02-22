@@ -81,11 +81,14 @@ For full local stack (Postgres + shards + monitoring):
    - Optional runtime override for bot only:
      - `WO_RUNTIME_INSTANCE`
      - `WO_RUNTIME_API_KEY`
+   - Optional local runtime auth (used when `WO_RUNTIME_INSTANCE` points to local):
+     - `WO_LOCAL_USERNAME` (default: `wxo.archer@ibm.com`)
+     - `WO_LOCAL_PASSWORD` (default: `watsonx`)
 4. Import bot resources (tools + knowledge base + agent):
    - `scripts/import_wxo_from_env.sh all`
    - this script activates `WO_ENV` first, then imports tools, KB, and agent
 
-If `WO_INSTANCE` or `WO_API_KEY` is missing/invalid, `/pokeagent` will be unavailable.
+If required credentials are missing/invalid for the configured runtime target, `/pokeagent` will be unavailable.
 
 ## Monitoring
 

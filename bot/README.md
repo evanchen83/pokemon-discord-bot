@@ -35,6 +35,8 @@ Optional:
 - `WO_API_KEY`
 - `WO_RUNTIME_INSTANCE` (optional bot-only target override; defaults to `WO_INSTANCE`)
 - `WO_RUNTIME_API_KEY` (optional bot-only key override; defaults to `WO_API_KEY`)
+- `WO_LOCAL_USERNAME` (used for local runtime login; default `wxo.archer@ibm.com`)
+- `WO_LOCAL_PASSWORD` (used for local runtime login; default `watsonx`)
 - `PACK_PG_DSN` (Postgres DSN for pack history persistence)
 - `THREAD_PG_DSN` (optional; defaults to `PACK_PG_DSN` for thread context persistence)
 - `DISCORD_SHARD_COUNT` (optional total shard count; when omitted discord.py auto-detects)
@@ -55,6 +57,7 @@ uv run python bot/discord_wxo_bot.py
 
 - In Docker, set `WO_INSTANCE` + `WO_API_KEY` in `.env`.
 - If the bot should hit a different target than CLI/import (for example local runtime), set `WO_RUNTIME_INSTANCE` (and optionally `WO_RUNTIME_API_KEY`).
+- For local runtime targets, set `WO_LOCAL_USERNAME` + `WO_LOCAL_PASSWORD` if your local server uses non-default credentials.
 - App-command sync is manual by default. Use owner command (mention-prefix):
   - `@Bot sync` or `@Bot sync global`
   - `@Bot sync guild`
