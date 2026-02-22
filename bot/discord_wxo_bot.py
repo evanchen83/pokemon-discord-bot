@@ -966,16 +966,39 @@ def _render_markdown_table_as_pretty_codeblock(
 
     sep = "|-" + "-|-".join("-" * widths[i] for i in range(col_count)) + "-|"
 
+    # Keep each rendered table block under the embed page limit so downstream
+    # pagination doesn't split fenced code blocks.
+    target_chars = max(420, EMBED_PAGE_CHAR_LIMIT - 80)
+    header_block = f"{fmt_row(headers)}\n{sep}"
+    row_groups: list[tuple[int, int, list[str]]] = []
+
+    start_idx = 0
+    current_rows: list[str] = []
+    current_chars = len(header_block)
+    for idx, row in enumerate(all_rows):
+        rendered = fmt_row(row)
+        projected = current_chars + 1 + len(rendered)
+        row_count = len(current_rows)
+        if (
+            row_count > 0
+            and (projected > target_chars or row_count >= rows_per_block)
+        ):
+            row_groups.append((start_idx, idx, current_rows))
+            start_idx = idx
+            current_rows = []
+            current_chars = len(header_block)
+        current_rows.append(rendered)
+        current_chars += 1 + len(rendered)
+
+    if current_rows:
+        row_groups.append((start_idx, len(all_rows), current_rows))
+
     chunks: list[str] = []
     total_rows = len(all_rows)
-    total_blocks = max(1, (total_rows + rows_per_block - 1) // rows_per_block)
-    for block_idx in range(total_blocks):
-        start = block_idx * rows_per_block
-        end = min(start + rows_per_block, total_rows)
-        lines = [fmt_row(headers), sep]
-        for row in all_rows[start:end]:
-            lines.append(fmt_row(row))
-        prefix = f"Table page {block_idx + 1}/{total_blocks} (rows {start + 1}-{end} of {total_rows})"
+    total_blocks = max(1, len(row_groups))
+    for block_idx, (start, end, rendered_rows) in enumerate(row_groups, start=1):
+        lines = [fmt_row(headers), sep] + rendered_rows
+        prefix = f"Table page {block_idx}/{total_blocks} (rows {start + 1}-{end} of {total_rows})"
         chunks.append(prefix + "\n```text\n" + "\n".join(lines) + "\n```")
 
     return "\n\n".join(chunks)
