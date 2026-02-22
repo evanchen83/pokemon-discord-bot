@@ -73,28 +73,37 @@ For full local stack (Postgres + shards + monitoring):
 
 1. Create/get your Orchestrate account: https://www.ibm.com/products/watsonx-orchestrate
 2. Get ADK environment credentials: https://developer.watson-orchestrate.ibm.com/environment/initiate_environment
-3. Set these in `.env`:
-   - Always set for cloud/runtime defaults:
-     - `WO_INSTANCE`
-     - `WO_API_KEY`
-     - `WO_AGENT_NAME` (default: `pokemon_tcg_agent`)
-   - `WO_ENV` (default: `local`) is used by import scripts (for example `scripts/import_wxo_from_env.sh`), not by bot runtime auth.
-   - Optional bot-only target override:
-     - `WO_RUNTIME_INSTANCE`
-     - `WO_RUNTIME_API_KEY`
-   - Optional local runtime auth (only when bot runtime target is local):
-     - `WO_LOCAL_USERNAME` (default: `wxo.archer@ibm.com`)
-     - `WO_LOCAL_PASSWORD` (default: `watsonx`)
-4. Runtime auth behavior:
-   - Cloud mode (`WO_RUNTIME_INSTANCE` unset, or points to cloud):
-     - bot uses API key auth (`WO_RUNTIME_API_KEY` or fallback `WO_API_KEY`)
-     - local username/password are ignored
-   - Local mode (`WO_RUNTIME_INSTANCE` points to localhost/local runtime):
-     - bot logs in via `/auth/token` using `WO_LOCAL_USERNAME` + `WO_LOCAL_PASSWORD`
-     - API key is not used for bot request auth in this mode
-5. Import bot resources (tools + knowledge base + agent):
+3. Choose one runtime path:
+
+### Cloud-hosted WXO (Production/Default)
+
+- Set these in `.env`:
+  - `WO_INSTANCE`
+  - `WO_API_KEY`
+  - `WO_AGENT_NAME` (default: `pokemon_tcg_agent`)
+- Optional bot-only override:
+  - `WO_RUNTIME_INSTANCE`
+  - `WO_RUNTIME_API_KEY`
+- Auth behavior:
+  - bot uses API key auth (`WO_RUNTIME_API_KEY` or fallback `WO_API_KEY`)
+  - `WO_LOCAL_USERNAME` / `WO_LOCAL_PASSWORD` are ignored
+
+### Self-hosted runtime (Local ADK)
+
+- Keep cloud vars (`WO_INSTANCE`, `WO_API_KEY`) for script/import workflows.
+- Point bot runtime to local:
+  - `WO_RUNTIME_INSTANCE=http://<your-local-runtime>`
+- Set local runtime auth:
+  - `WO_LOCAL_USERNAME` (default: `wxo.archer@ibm.com`)
+  - `WO_LOCAL_PASSWORD` (default: `watsonx`)
+- Auth behavior:
+  - bot gets JWT from `/auth/token` using local username/password
+  - API key is not used for bot request auth in this local mode
+
+4. Import bot resources (tools + knowledge base + agent):
    - `scripts/import_wxo_from_env.sh all`
    - this script activates `WO_ENV` first, then imports tools, KB, and agent
+   - `WO_ENV` (default: `local`) is used by these scripts, not by bot runtime auth
 
 If required credentials are missing/invalid for the configured runtime target, `/pokeagent` will be unavailable.
 

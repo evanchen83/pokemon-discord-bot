@@ -58,10 +58,23 @@ uv run python bot/discord_wxo_bot.py
 
 ## Notes
 
-- In Docker/prod, set `WO_INSTANCE` + `WO_API_KEY` in `.env` (cloud mode).
-- If the bot should hit a different target than CLI/import, set `WO_RUNTIME_INSTANCE` (and optionally `WO_RUNTIME_API_KEY`).
-- Cloud mode auth: bot uses API key header (`WO_RUNTIME_API_KEY` or fallback `WO_API_KEY`).
-- Local mode auth (`WO_RUNTIME_INSTANCE` points to localhost/local runtime): bot uses `/auth/token` with `WO_LOCAL_USERNAME` + `WO_LOCAL_PASSWORD`; API key is not used for bot request auth in this mode.
+### Cloud-hosted WXO (Production/Default)
+
+- Set `WO_INSTANCE` + `WO_API_KEY` in `.env`.
+- Optionally set `WO_RUNTIME_INSTANCE` / `WO_RUNTIME_API_KEY` if bot runtime target should differ from CLI/import target.
+- Bot auth uses API key header (`WO_RUNTIME_API_KEY` or fallback `WO_API_KEY`).
+- `WO_LOCAL_USERNAME` / `WO_LOCAL_PASSWORD` are ignored in cloud mode.
+
+### Self-hosted runtime (Local ADK)
+
+- Point bot runtime to local with `WO_RUNTIME_INSTANCE=http://<your-local-runtime>`.
+- Set `WO_LOCAL_USERNAME` + `WO_LOCAL_PASSWORD` for local token login.
+- Bot gets JWT from `/auth/token` in this mode.
+- API key is not used for bot request auth in this local mode.
+
+### Script-only env
+
+- `WO_ENV` is used by import scripts, not by bot runtime auth.
 - App-command sync is manual by default. Use owner command (mention-prefix):
   - `@Bot sync` or `@Bot sync global`
   - `@Bot sync guild`
