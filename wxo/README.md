@@ -4,12 +4,12 @@ Central location for all watsonx Orchestrate deployment YAML files.
 
 ## Layout
 
-- `deploy/wxo/registry.yaml`: index of manifests and deployment order
-- `deploy/wxo/environments/`: environment configs and references
-- `deploy/wxo/knowledge-bases/`: KB deployment manifests
-- `deploy/wxo/agents/`: agent manifests
-- `deploy/wxo/channels/`: channel/binding manifests (Discord, web chat, etc.)
-- `deploy/wxo/templates/`: starter templates for new manifests
+- `wxo/registry.yaml`: index of manifests and deployment order
+- `wxo/environments/`: environment configs and references
+- `wxo/knowledge-bases/`: KB deployment manifests
+- `wxo/agents/`: agent manifests
+- `wxo/channels/`: channel/binding manifests (Discord, web chat, etc.)
+- `wxo/templates/`: starter templates for new manifests
 
 ## Convention
 
@@ -30,7 +30,7 @@ It activates `WO_ENV` first (defaults to `local`), then imports resources into t
 For cloud ADK environments, add/create that environment in ADK before activating it. Activating without adding typically only works for the default local environment.
 
 ```bash
-scripts/import_wxo_from_env.sh all
+wxo/scripts/import_wxo_from_env.sh all
 ```
 
 This imports in order:
@@ -41,14 +41,14 @@ This imports in order:
 Useful variants:
 
 ```bash
-scripts/import_wxo_from_env.sh tools
-scripts/import_wxo_from_env.sh kb
-scripts/import_wxo_from_env.sh agent
-scripts/import_wxo_from_env.sh all --env local
+wxo/scripts/import_wxo_from_env.sh tools
+wxo/scripts/import_wxo_from_env.sh kb
+wxo/scripts/import_wxo_from_env.sh agent
+wxo/scripts/import_wxo_from_env.sh all --env local
 ```
 
 Direct/manual script (if you want to skip `.env` wrapper):
 
 ```bash
-scripts/import_wxo_resources.sh all --env local
+wxo/scripts/import_wxo_resources.sh all --env local
 ```

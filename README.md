@@ -98,7 +98,7 @@ For full local stack (Postgres + shards + monitoring):
   - API key is not used for bot request auth in this local mode
 
 4. Import bot resources (tools + knowledge base + agent):
-   - `scripts/import_wxo_from_env.sh all`
+   - `wxo/scripts/import_wxo_from_env.sh all`
    - this script activates `WO_ENV` first, then imports tools, KB, and agent
    - `WO_ENV` (default: `local`) is used by these scripts, not by bot runtime auth
    - For cloud ADK environments: add/create the environment in ADK first, then activate it. Activating without adding works only for the default local environment.
@@ -132,3 +132,4 @@ Discord Command Screens
 - Bot command and env details: `bot/README.md`
 - DB changelogs: `db/changelog/db.changelog-master.xml`
 - Monitoring config: `monitoring/`
+- WXO manifests + import scripts: `wxo/`

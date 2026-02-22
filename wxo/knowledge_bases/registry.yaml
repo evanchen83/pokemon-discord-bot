@@ -1,8 +1,8 @@
 knowledge_bases:
   - id: pokemon-tcg
     description: Pokemon TCG cards and set metadata
-    source_csv: deploy/wxo/knowledge-bases/pokemon-tcg-docs/cards-001.csv
-    deployment_manifest: deploy/wxo/knowledge-bases/pokemon-tcg-kb.yaml
+    source_csv: wxo/knowledge-bases/pokemon-tcg-docs/cards-001.csv
+    deployment_manifest: wxo/knowledge-bases/pokemon-tcg-kb.yaml
     status: active
   - id: pokemon-general
     description: Future general Pokemon knowledge base

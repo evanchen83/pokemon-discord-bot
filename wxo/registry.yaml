@@ -1,0 +1,10 @@
+version: 1
+manifests:
+  environments: []
+  knowledge_bases:
+  - wxo/knowledge-bases/pokemon-tcg-kb.yaml
+  agents:
+  - wxo/agents/pokemon-tcg-agent.yaml
+  channels: []
+  tools:
+  - wxo/tools/pokemon_tcg_stats_tools.py
