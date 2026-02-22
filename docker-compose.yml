@@ -55,6 +55,8 @@ services:
       # WO credentials
       WO_INSTANCE: ${WO_INSTANCE:-}
       WO_API_KEY: ${WO_API_KEY:-}
+      WO_RUNTIME_INSTANCE: ${WO_RUNTIME_INSTANCE:-}
+      WO_RUNTIME_API_KEY: ${WO_RUNTIME_API_KEY:-}
       PACK_PG_DSN: ${PACK_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       THREAD_PG_DSN: ${THREAD_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       DISCORD_SHARD_COUNT: 2
@@ -88,6 +90,8 @@ services:
       # WO credentials
       WO_INSTANCE: ${WO_INSTANCE:-}
       WO_API_KEY: ${WO_API_KEY:-}
+      WO_RUNTIME_INSTANCE: ${WO_RUNTIME_INSTANCE:-}
+      WO_RUNTIME_API_KEY: ${WO_RUNTIME_API_KEY:-}
       PACK_PG_DSN: ${PACK_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       THREAD_PG_DSN: ${THREAD_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       DISCORD_SHARD_COUNT: 2

@@ -136,8 +136,8 @@ class Settings:
 
         agent_name = os.getenv("WO_AGENT_NAME", "pokemon_tcg_agent").strip() or "pokemon_tcg_agent"
         agent_id = (os.getenv("WO_AGENT_ID") or "").strip() or None
-        wxo_base_url = (os.getenv("WO_INSTANCE") or "").strip() or None
-        wxo_api_key = (os.getenv("WO_API_KEY") or "").strip() or None
+        wxo_base_url = (os.getenv("WO_RUNTIME_INSTANCE") or os.getenv("WO_INSTANCE") or "").strip() or None
+        wxo_api_key = (os.getenv("WO_RUNTIME_API_KEY") or os.getenv("WO_API_KEY") or "").strip() or None
         ttl_minutes = _env_int("THREAD_TTL_MINUTES", 10)
         pack_pg_dsn = (os.getenv("PACK_PG_DSN") or os.getenv("DATABASE_URL") or "").strip() or None
         thread_pg_dsn = (os.getenv("THREAD_PG_DSN") or "").strip() or pack_pg_dsn

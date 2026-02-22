@@ -78,6 +78,9 @@ For full local stack (Postgres + shards + monitoring):
    - `WO_API_KEY`
    - `WO_AGENT_NAME` (default: `pokemon_tcg_agent`)
    - `WO_ENV` (default: `local`)
+   - Optional runtime override for bot only:
+     - `WO_RUNTIME_INSTANCE`
+     - `WO_RUNTIME_API_KEY`
 4. Import bot resources (tools + knowledge base + agent):
    - `scripts/import_wxo_from_env.sh all`
    - this script activates `WO_ENV` first, then imports tools, KB, and agent
