@@ -17,7 +17,7 @@ Modes:
 Options:
   --env <name>      ADK environment name to activate before import
   --env-file <path> Path to env file (default: .env)
-  --no-activate     Skip ADK env activation even if --env / WO_ADK_ENV is set
+  --no-activate     Skip ADK env activation even if --env / WO_ENV is set
   -h, --help        Show this help
 
 Examples:
@@ -86,7 +86,7 @@ if [[ -z "${API_KEY}" ]]; then
 fi
 
 if [[ -z "$ADK_ENV_NAME" ]]; then
-  ADK_ENV_NAME="${WO_ADK_ENV:-}"
+  ADK_ENV_NAME="${WO_ENV:-local}"
 fi
 
 IMPORT_SCRIPT="$ROOT_DIR/scripts/import_wxo_resources.sh"
@@ -110,7 +110,7 @@ if [[ "$NO_ACTIVATE" == "true" ]]; then
 elif [[ -n "$ADK_ENV_NAME" ]]; then
   echo "ADK environment: $ADK_ENV_NAME"
 else
-  echo "ADK environment: not set (pass --env <name> or set WO_ADK_ENV)"
+  echo "ADK environment: not set (using default: local)"
 fi
 
 "${CMD[@]}"
