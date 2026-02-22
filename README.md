@@ -104,6 +104,12 @@ Advanced/manual script (direct):
 
 - `scripts/import_wxo_resources.sh all --env <your-adk-env>`
 
+ADK best-practice notes:
+
+- Add and activate a named ADK environment first (for example: `orchestrate env add -n dev -u <instance-url> --type mcsp --activate`).
+- Keep imports pointed at one active environment; ADK import/list/remove commands target the active env.
+- For on-prem auth, use either API key or username/password (not both at once).
+
 ## Monitoring
 
 - Prometheus: `http://localhost:9090`
@@ -125,14 +131,6 @@ Discord Command Screens
 <img src="docs/screenshots/04-discord-pokebox.png" alt="PokeBox command sorted by region (page 3 of 9)" width="720" />
 <br />
 <img src="docs/screenshots/05-discord-pokeagent.png" alt="PokeAgent response for bird-shaped Pokemon cards" width="720" />
-
-## Security Notes
-
-- Never commit `.env` or credential files.
-- Rotate any credential that was ever committed or shared.
-- Use `.env.example` as the only committed env template.
-- Before pushing, run a quick scan:
-  - `rg -n --hidden --glob '!.git/*' --glob '!.venv/*' '(DISCORD_BOT_TOKEN|WO_API_KEY|WXO_API_KEY|password=|token=)' .`
 
 ## Docs
 
