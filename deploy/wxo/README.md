@@ -26,6 +26,7 @@ Central location for all watsonx Orchestrate deployment YAML files.
 ## Import Workflow
 
 Use the project helper wrapper to import/update resources using `.env` credentials.
+It activates `WO_ENV` first (defaults to `local`), then imports resources into that active environment.
 
 ```bash
 scripts/import_wxo_from_env.sh all
@@ -43,7 +44,6 @@ scripts/import_wxo_from_env.sh tools
 scripts/import_wxo_from_env.sh kb
 scripts/import_wxo_from_env.sh agent
 scripts/import_wxo_from_env.sh all --env local
-scripts/import_wxo_from_env.sh all --no-activate
 ```
 
 Direct/manual script (if you want to skip `.env` wrapper):

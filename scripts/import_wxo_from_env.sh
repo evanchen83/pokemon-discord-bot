@@ -17,13 +17,12 @@ Modes:
 Options:
   --env <name>      ADK environment name to activate before import
   --env-file <path> Path to env file (default: .env)
-  --no-activate     Skip ADK env activation even if --env / WO_ENV is set
   -h, --help        Show this help
 
 Examples:
   scripts/import_wxo_from_env.sh
   scripts/import_wxo_from_env.sh all --env dev
-  scripts/import_wxo_from_env.sh tools --no-activate
+  scripts/import_wxo_from_env.sh tools
 EOF
 }
 
@@ -31,7 +30,6 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MODE="all"
 ENV_FILE="$ROOT_DIR/.env"
 ADK_ENV_NAME=""
-NO_ACTIVATE="false"
 PASSTHROUGH_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -47,10 +45,6 @@ while [[ $# -gt 0 ]]; do
     --env-file)
       ENV_FILE="${2:-}"
       shift 2
-      ;;
-    --no-activate)
-      NO_ACTIVATE="true"
-      shift
       ;;
     -h|--help)
       usage
@@ -96,21 +90,22 @@ if [[ ! -f "$IMPORT_SCRIPT" ]]; then
 fi
 
 CMD=("$IMPORT_SCRIPT" "$MODE")
-if [[ "$NO_ACTIVATE" != "true" && -n "$ADK_ENV_NAME" ]]; then
-  CMD+=("--env" "$ADK_ENV_NAME")
-fi
 if [[ "${#PASSTHROUGH_ARGS[@]}" -gt 0 ]]; then
   CMD+=("${PASSTHROUGH_ARGS[@]}")
 fi
 
 echo "Using env file: $ENV_FILE"
 echo "Target instance: $INSTANCE_URL"
-if [[ "$NO_ACTIVATE" == "true" ]]; then
-  echo "ADK environment activation: skipped"
-elif [[ -n "$ADK_ENV_NAME" ]]; then
-  echo "ADK environment: $ADK_ENV_NAME"
+echo "ADK environment: $ADK_ENV_NAME"
+
+if command -v orchestrate >/dev/null 2>&1; then
+  CLI=(orchestrate)
 else
-  echo "ADK environment: not set (using default: local)"
+  CLI=(python3 -m ibm_watsonx_orchestrate.cli.main)
 fi
+
+echo "Activating ADK environment..."
+"${CLI[@]}" env activate "$ADK_ENV_NAME"
+echo "Environment activated."
 
 "${CMD[@]}"

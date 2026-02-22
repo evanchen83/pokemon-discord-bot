@@ -80,6 +80,7 @@ For full local stack (Postgres + shards + monitoring):
    - `WO_ENV` (default: `local`)
 4. Import bot resources (tools + knowledge base + agent):
    - `scripts/import_wxo_from_env.sh all`
+   - this script activates `WO_ENV` first, then imports tools, KB, and agent
 
 If `WO_INSTANCE` or `WO_API_KEY` is missing/invalid, `/pokeagent` will be unavailable.
 
