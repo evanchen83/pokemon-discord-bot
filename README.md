@@ -57,12 +57,18 @@ For full local stack (Postgres + shards + monitoring):
 
 ## Screenshots
 
-Use `docs/screenshots/` for all Discord/Grafana screenshots.
+Discord Command Screens
 
-- Guide: `docs/screenshots/README.md`
-- Caption/order manifest: `docs/screenshots/manifest.md`
+![Open pack command in Surging Sparks with pack summary and card pagination](docs/screenshots/01-discord-open-pack.png)
+![Catch command result where Timburr was caught](docs/screenshots/03-discord-catch.png)
+![PokeBox command sorted by region (page 3 of 9)](docs/screenshots/04-discord-pokebox.png)
+![PokeAgent response for bird-shaped Pokemon cards](docs/screenshots/05-discord-pokeagent.png)
 
-After you drop files there, tell me and I will format the final README gallery.
+Screenshot Workflow
+
+- Drop new images in `docs/screenshots/`
+- Follow naming from `docs/screenshots/README.md`
+- Update captions/order in `docs/screenshots/manifest.md`
 
 ## Security Notes
 
