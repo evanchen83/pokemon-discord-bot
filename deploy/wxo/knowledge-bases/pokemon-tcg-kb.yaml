@@ -1,0 +1,15 @@
+spec_version: v1
+kind: knowledge_base
+name: pokemon-tcg-kb
+description: Pokemon TCG card knowledge base (bulk CSV shards)
+vector_index:
+  extraction_strategy: standard
+  chunk_size: 1200
+  chunk_overlap: 120
+documents:
+  - ./pokemon-tcg-docs/cards-001.csv
+  - ./pokemon-tcg-docs/cards-002.csv
+  - ./pokemon-tcg-docs/cards-003.csv
+  - ./pokemon-tcg-docs/cards-004.csv
+  - ./pokemon-tcg-docs/cards-005.csv
+  - ./pokemon-tcg-docs/sets.csv

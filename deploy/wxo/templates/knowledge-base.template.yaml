@@ -1,0 +1,7 @@
+# Example only. Update fields to match WXO ADK schema/CLI requirements.
+name: pokemon-tcg-kb
+collection: pokemon_tcg
+description: Pokemon TCG knowledge base
+source:
+  type: csv
+  path: data/pokemontcg/csv/cards.csv

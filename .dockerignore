@@ -1,0 +1,17 @@
+.git
+.gitignore
+.cache
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.env
+data
+deploy
+knowledge_bases
+scripts
+!data/
+!data/pokemontcg/
+!data/pokemontcg/csv/
+!data/pokemontcg/csv/**
