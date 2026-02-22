@@ -8,30 +8,19 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
+from .ownership_cache import ResponseOwnershipCache
+from .query_flow import build_agent_error_embed
+
 if TYPE_CHECKING:
-    from discord_wxo_bot import PokemonBot
+    from common.types import PokemonBotProtocol
 
 logger = logging.getLogger(__name__)
 
 
 class PokeAgentCog(commands.Cog):
-    def __init__(self, bot: "PokemonBot"):
+    def __init__(self, bot: "PokemonBotProtocol"):
         self.bot = bot
-        # bot_message_id -> (owner_user_id, channel_id, created_epoch)
-        self._response_owner_by_message_id: dict[int, tuple[int, int, int]] = {}
-
-    def _remember_response_message(self, message_id: int, owner_user_id: int, channel_id: int) -> None:
-        now = int(time.time())
-        self._response_owner_by_message_id[int(message_id)] = (int(owner_user_id), int(channel_id), now)
-        if len(self._response_owner_by_message_id) <= 2000:
-            return
-        cutoff = now - (6 * 60 * 60)
-        stale = [mid for mid, (_, _, ts) in self._response_owner_by_message_id.items() if ts < cutoff]
-        for mid in stale:
-            self._response_owner_by_message_id.pop(mid, None)
-        while len(self._response_owner_by_message_id) > 1800:
-            oldest = min(self._response_owner_by_message_id.items(), key=lambda x: x[1][2])[0]
-            self._response_owner_by_message_id.pop(oldest, None)
+        self._owners = ResponseOwnershipCache()
 
     @app_commands.command(name="pokeagent", description="Chat with the pokemon_tcg_agent")
     @app_commands.describe(question="Your question for the Pokemon TCG agent")
@@ -55,13 +44,7 @@ class PokeAgentCog(commands.Cog):
             except Exception as exc:
                 outcome = "error"
                 logger.exception("Failed to run WXO agent")
-                err = discord.Embed(
-                    title="Pokemon TCG Agent",
-                    description=f"Agent request failed: `{exc}`",
-                    color=discord.Color.red(),
-                )
-                err.set_footer(text="Powered by IBM watsonx Orchestrate")
-                await interaction.followup.send(embed=err)
+                await interaction.followup.send(embed=build_agent_error_embed(exc))
                 return
 
             pretty_response = self.bot.format_agent_response_for_discord(response)
@@ -74,13 +57,13 @@ class PokeAgentCog(commands.Cog):
             )
             if len(embeds) == 1:
                 sent = await interaction.followup.send(embed=embeds[0], wait=True)
-                self._remember_response_message(sent.id, interaction.user.id, interaction.channel_id)
+                self._owners.remember(sent.id, interaction.user.id, interaction.channel_id)
                 return
 
             pager = self.bot.make_embed_pager(embeds=embeds, owner_user_id=interaction.user.id)
             msg = await interaction.followup.send(embed=embeds[0], view=pager, wait=True)
             pager.message = msg
-            self._remember_response_message(msg.id, interaction.user.id, interaction.channel_id)
+            self._owners.remember(msg.id, interaction.user.id, interaction.channel_id)
         finally:
             self.bot.record_command_metric(command="pokeagent", outcome=outcome, started_at=started_at)
 
@@ -91,9 +74,8 @@ class PokeAgentCog(commands.Cog):
 
         question: Optional[str] = None
         force_new_thread = False
-        ref_owner: Optional[int] = None
         if message.reference and message.reference.message_id:
-            ref = self._response_owner_by_message_id.get(int(message.reference.message_id))
+            ref = self._owners.get(int(message.reference.message_id))
             if ref is not None:
                 ref_owner, ref_channel, _ = ref
                 if ref_channel == message.channel.id:
@@ -109,14 +91,13 @@ class PokeAgentCog(commands.Cog):
             raw = (message.content or "")
             raw = raw.replace(f"<@{self.bot.user.id}>", "").replace(f"<@!{self.bot.user.id}>", "")
             question = raw.strip()
-            # Fresh @mention always starts a new WXO thread for this user/channel.
             force_new_thread = True
 
         if not question:
             return
         if not await self.bot.ensure_wxo_available():
             sent = await message.reply(self.bot.wxo_unavailable_text, mention_author=False)
-            self._remember_response_message(sent.id, message.author.id, message.channel.id)
+            self._owners.remember(sent.id, message.author.id, message.channel.id)
             return
 
         async with message.channel.typing():
@@ -129,14 +110,8 @@ class PokeAgentCog(commands.Cog):
                 )
             except Exception as exc:
                 logger.exception("Failed to run WXO agent from message")
-                err = discord.Embed(
-                    title="Pokemon TCG Agent",
-                    description=f"Agent request failed: `{exc}`",
-                    color=discord.Color.red(),
-                )
-                err.set_footer(text="Powered by IBM watsonx Orchestrate")
-                sent_err = await message.reply(embed=err, mention_author=False)
-                self._remember_response_message(sent_err.id, message.author.id, message.channel.id)
+                sent_err = await message.reply(embed=build_agent_error_embed(exc), mention_author=False)
+                self._owners.remember(sent_err.id, message.author.id, message.channel.id)
                 return
 
         pretty_response = self.bot.format_agent_response_for_discord(response)
@@ -149,10 +124,10 @@ class PokeAgentCog(commands.Cog):
         )
         if len(embeds) == 1:
             sent = await message.reply(embed=embeds[0], mention_author=False)
-            self._remember_response_message(sent.id, message.author.id, message.channel.id)
+            self._owners.remember(sent.id, message.author.id, message.channel.id)
             return
 
         pager = self.bot.make_embed_pager(embeds=embeds, owner_user_id=message.author.id)
         sent = await message.reply(embed=embeds[0], view=pager, mention_author=False)
         pager.message = sent
-        self._remember_response_message(sent.id, message.author.id, message.channel.id)
+        self._owners.remember(sent.id, message.author.id, message.channel.id)

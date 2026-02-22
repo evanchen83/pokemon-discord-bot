@@ -14,11 +14,14 @@
 
 ## Structure
 
-- Cog-based command/listener architecture
-- `bot/cogs/pokeagent_cog.py` for `/pokeagent` and mention/reply listener flow
-- `bot/cogs/packs_cog.py` for `/open_pack`, autocomplete, and `/my_cards`
-- `bot/cogs/pcbox_cog.py` for `$catch`/`/catch` catches and `$pokebox`/`/pokebox` sort/pagination rendering
-- `bot/discord_wxo_bot.py` keeps bot wiring, shared services, and shared UI helpers
+- Cog-based command/listener architecture with feature packages under `bot/cogs/`
+- `bot/cogs/pokeagent/` for `/pokeagent` plus mention/reply flow
+- `bot/cogs/packs/` for `/open_pack`, autocomplete, and `/my_cards`
+- `bot/cogs/pcbox/` for `$catch`/`/catch` and `$pokebox`/`/pokebox` rendering
+- `bot/cogs/admin/` for sync + grant helpers
+- `bot/common/` for shared config, Discord rendering, pager UI, metrics, and types
+- `bot/infrastructure/` for WXO runtime client + thread state persistence
+- `bot/discord_wxo_bot.py` as thin composition/root entrypoint
 
 ## Required env vars
 

@@ -9,28 +9,18 @@ from discord import app_commands
 from discord.ext import commands
 
 if TYPE_CHECKING:
-    from discord_wxo_bot import PokemonBot
+    from common.types import PokemonBotProtocol
 
 
 class AdminCog(commands.Cog):
     GRANTPOKEMON_ALLOWED_USERNAME = "chewychiyu"
 
-    def __init__(self, bot: "PokemonBot"):
+    def __init__(self, bot: "PokemonBotProtocol"):
         self.bot = bot
 
     @commands.command(name="sync")
     @commands.is_owner()
     async def sync_commands(self, ctx: commands.Context, scope: Optional[Literal["global", "guild", "copy", "clear"]] = None) -> None:
-        """
-        Owner-only app-command sync helper.
-
-        Usage (mention-prefix):
-        - @Bot sync            -> global sync
-        - @Bot sync global     -> global sync
-        - @Bot sync guild      -> sync current guild only
-        - @Bot sync copy       -> copy global commands to current guild, then sync guild
-        - @Bot sync clear      -> clear current guild commands, then sync guild
-        """
         mode = (scope or "global").lower()
 
         if mode == "global":

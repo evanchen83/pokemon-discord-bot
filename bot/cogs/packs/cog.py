@@ -4,7 +4,7 @@ import asyncio
 import logging
 import time
 from datetime import datetime, timedelta, timezone
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
@@ -13,34 +13,19 @@ from discord.ext import commands
 from features.embed_standards import EMBED_PAGE_CHAR_LIMIT
 from features.pack_opening import format_pull_lines, rarity_bucket
 
+from .collection_rendering import build_set_blocks
+from .daily_limits import OpenPackFallbackLimiter
+
 if TYPE_CHECKING:
-    from discord_wxo_bot import PokemonBot
+    from common.types import PokemonBotProtocol
 
 logger = logging.getLogger(__name__)
 
 
 class PacksCog(commands.Cog):
-    def __init__(self, bot: "PokemonBot"):
+    def __init__(self, bot: "PokemonBotProtocol"):
         self.bot = bot
-        # Fallback limiter used only when Postgres pack history is unavailable.
-        self._open_pack_daily_usage_fallback: dict[int, tuple[int, int]] = {}
-
-    async def _consume_open_pack_daily_slot_fallback(
-        self, *, user_id: int, day_start_utc: datetime, daily_limit: int
-    ) -> tuple[bool, int]:
-        if daily_limit < 1:
-            return False, 0
-        day_key = int(day_start_utc.timestamp() // 86400)
-        fallback = self._open_pack_daily_usage_fallback.get(user_id)
-        if not fallback or fallback[0] != day_key:
-            self._open_pack_daily_usage_fallback[user_id] = (day_key, 1)
-            return True, 1
-        current_uses = fallback[1]
-        if current_uses >= daily_limit:
-            return False, current_uses
-        next_uses = current_uses + 1
-        self._open_pack_daily_usage_fallback[user_id] = (day_key, next_uses)
-        return True, next_uses
+        self._fallback_limiter = OpenPackFallbackLimiter()
 
     @app_commands.command(name="open_pack", description="Open a cosmetic Pokemon TCG booster pack")
     @app_commands.describe(set_name="Set to open (autocomplete enabled)")
@@ -80,13 +65,13 @@ class PacksCog(commands.Cog):
                     )
                 except Exception:
                     logger.exception("Failed consuming pack-open usage for user=%s", interaction.user.id)
-                    allowed, opened_today = await self._consume_open_pack_daily_slot_fallback(
+                    allowed, opened_today = await self._fallback_limiter.consume_slot(
                         user_id=interaction.user.id,
                         day_start_utc=day_start_utc,
                         daily_limit=self.bot.open_pack_daily_limit,
                     )
             else:
-                allowed, opened_today = await self._consume_open_pack_daily_slot_fallback(
+                allowed, opened_today = await self._fallback_limiter.consume_slot(
                     user_id=interaction.user.id,
                     day_start_utc=day_start_utc,
                     daily_limit=self.bot.open_pack_daily_limit,
@@ -222,35 +207,7 @@ class PacksCog(commands.Cog):
                 await interaction.followup.send("No cards in your collection yet. Open a pack first with `/open_pack`.", ephemeral=True)
                 return
 
-            set_order: list[str] = []
-            rows_by_set: dict[str, list[Any]] = {}
-            for row in rows:
-                if row.set_name not in rows_by_set:
-                    set_order.append(row.set_name)
-                    rows_by_set[row.set_name] = []
-                rows_by_set[row.set_name].append(row)
-
-            set_blocks: list[str] = []
-            for set_name in set_order:
-                set_rows = rows_by_set[set_name]
-                set_rows.sort(
-                    key=lambda r: (
-                        -self.bot.rarity_rank(r.rarity),
-                        -(r.copies or 0),
-                        (r.card_name or "").lower(),
-                        (r.card_number or ""),
-                    )
-                )
-                top_rank = self.bot.rarity_rank(set_rows[0].rarity) if set_rows else 0
-                lines_for_set: list[str] = []
-                for row in set_rows:
-                    num = f" #{row.card_number}" if row.card_number else ""
-                    dup = f" ({row.copies}x)" if row.copies > 1 else ""
-                    line = f"• {row.card_name}{num} [{row.rarity}]{dup}"
-                    if self.bot.rarity_rank(row.rarity) == top_rank:
-                        line = f"**{line}**"
-                    lines_for_set.append(line)
-                set_blocks.append(f"**{set_name}:**\n" + "\n".join(lines_for_set))
+            set_blocks = build_set_blocks(rows, self.bot.rarity_rank)
 
             pages = self.bot.paginate_set_blocks(set_blocks, limit=EMBED_PAGE_CHAR_LIMIT)
             embeds: list[discord.Embed] = []
