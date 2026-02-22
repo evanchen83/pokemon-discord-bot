@@ -1124,9 +1124,8 @@ def _build_response_embeds(
         image_blocks = image_blocks[:max_image_embeds]
     # Keep embeds compact and readable.
     chunks = _split_discord_message(text, limit=EMBED_PAGE_CHAR_LIMIT) or ["(No response text returned)"]
+    _ = llm_model
     footer = "Powered by IBM watsonx Orchestrate"
-    if llm_model:
-        footer = f"{footer} | Model: {llm_model}"
 
     embeds: list[discord.Embed] = []
     total = len(chunks)
