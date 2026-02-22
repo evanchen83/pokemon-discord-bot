@@ -49,12 +49,12 @@ services:
       # Defaults can be overridden in .env
       DISCORD_GUILD_ID: ${DISCORD_GUILD_ID:-}
       DISCORD_SYNC_COMMANDS: ${DISCORD_SYNC_COMMANDS:-true}
-      WXO_AGENT_NAME: ${WXO_AGENT_NAME:-pokemon_tcg_agent}
-      WXO_AGENT_ID: ${WXO_AGENT_ID:-}
+      WO_AGENT_NAME: ${WO_AGENT_NAME:-pokemon_tcg_agent}
+      WO_AGENT_ID: ${WO_AGENT_ID:-}
       THREAD_TTL_MINUTES: ${THREAD_TTL_MINUTES:-10}
-      # WXO credentials
-      WXO_BASE_URL: ${WXO_BASE_URL:-}
-      WXO_API_KEY: ${WXO_API_KEY:-}
+      # WO credentials
+      WO_INSTANCE: ${WO_INSTANCE:-}
+      WO_API_KEY: ${WO_API_KEY:-}
       PACK_PG_DSN: ${PACK_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       THREAD_PG_DSN: ${THREAD_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       DISCORD_SHARD_COUNT: 2
@@ -82,12 +82,12 @@ services:
       # Defaults can be overridden in .env
       DISCORD_GUILD_ID: ${DISCORD_GUILD_ID:-}
       DISCORD_SYNC_COMMANDS: ${DISCORD_SYNC_COMMANDS:-true}
-      WXO_AGENT_NAME: ${WXO_AGENT_NAME:-pokemon_tcg_agent}
-      WXO_AGENT_ID: ${WXO_AGENT_ID:-}
+      WO_AGENT_NAME: ${WO_AGENT_NAME:-pokemon_tcg_agent}
+      WO_AGENT_ID: ${WO_AGENT_ID:-}
       THREAD_TTL_MINUTES: ${THREAD_TTL_MINUTES:-10}
-      # WXO credentials
-      WXO_BASE_URL: ${WXO_BASE_URL:-}
-      WXO_API_KEY: ${WXO_API_KEY:-}
+      # WO credentials
+      WO_INSTANCE: ${WO_INSTANCE:-}
+      WO_API_KEY: ${WO_API_KEY:-}
       PACK_PG_DSN: ${PACK_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       THREAD_PG_DSN: ${THREAD_PG_DSN:-postgresql://pokemon:pokemon@postgres:5432/pokemon_bot}
       DISCORD_SHARD_COUNT: 2

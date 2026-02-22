@@ -134,10 +134,10 @@ class Settings:
                 raise RuntimeError("DISCORD_GUILD_ID must be an integer")
         sync_commands = _env_bool("DISCORD_SYNC_COMMANDS", False)
 
-        agent_name = os.getenv("WXO_AGENT_NAME", "pokemon_tcg_agent").strip() or "pokemon_tcg_agent"
-        agent_id = (os.getenv("WXO_AGENT_ID") or "").strip() or None
-        wxo_base_url = (os.getenv("WXO_BASE_URL") or "").strip() or None
-        wxo_api_key = (os.getenv("WXO_API_KEY") or "").strip() or None
+        agent_name = os.getenv("WO_AGENT_NAME", "pokemon_tcg_agent").strip() or "pokemon_tcg_agent"
+        agent_id = (os.getenv("WO_AGENT_ID") or "").strip() or None
+        wxo_base_url = (os.getenv("WO_INSTANCE") or "").strip() or None
+        wxo_api_key = (os.getenv("WO_API_KEY") or "").strip() or None
         ttl_minutes = _env_int("THREAD_TTL_MINUTES", 10)
         pack_pg_dsn = (os.getenv("PACK_PG_DSN") or os.getenv("DATABASE_URL") or "").strip() or None
         thread_pg_dsn = (os.getenv("THREAD_PG_DSN") or "").strip() or pack_pg_dsn
@@ -165,10 +165,10 @@ class Settings:
             wxo_agent_id=agent_id,
             wxo_base_url=wxo_base_url,
             wxo_api_key=wxo_api_key,
-            wxo_local_username=(os.getenv("WXO_LOCAL_USERNAME") or "wxo.archer@ibm.com").strip(),
-            wxo_local_password=(os.getenv("WXO_LOCAL_PASSWORD") or "watsonx").strip(),
-            wxo_tenant_id=(os.getenv("WXO_TENANT_ID") or "").strip() or None,
-            wxo_tenant_name=(os.getenv("WXO_TENANT_NAME") or "wxo-dev").strip(),
+            wxo_local_username=(os.getenv("WO_LOCAL_USERNAME") or "wxo.archer@ibm.com").strip(),
+            wxo_local_password=(os.getenv("WO_LOCAL_PASSWORD") or "watsonx").strip(),
+            wxo_tenant_id=(os.getenv("WO_TENANT_ID") or "").strip() or None,
+            wxo_tenant_name=(os.getenv("WO_TENANT_NAME") or "wxo-dev").strip(),
             thread_ttl_seconds=max(60, ttl_minutes * 60),
             pack_pg_dsn=pack_pg_dsn,
             thread_pg_dsn=thread_pg_dsn,
@@ -438,7 +438,7 @@ class WXOChatClient:
                 sample = ", ".join(names[:12]) if names else "(none)"
                 raise RuntimeError(
                     f"WXO agent '{name}' not found in configured cloud instance. "
-                    f"Set WXO_AGENT_NAME to an existing name, or set WXO_AGENT_ID directly. "
+                    f"Set WO_AGENT_NAME to an existing name, or set WO_AGENT_ID directly. "
                     f"Sample available agents: {sample}"
                 )
             raise RuntimeError(f"WXO agent '{name}' not found")

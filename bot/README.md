@@ -8,7 +8,7 @@
 - Adds catch commands: `$catch` and `/catch` (slot-roll style catch command; saved to Postgres)
 - Adds collection commands: `$pokebox` and `/pokebox` (renders your previously caught Pokemon sprites with sort + button pagination)
 - Adds restricted test grant command: `$grantpokemon` and `/grantpokemon` (username `chewychiyu` only)
-- Sends user message to WXO agent (`WXO_AGENT_NAME`, default `pokemon_tcg_agent`)
+- Sends user message to WXO agent (`WO_AGENT_NAME`, default `pokemon_tcg_agent`)
 - Reuses per-user/per-channel WXO `thread_id`
 - Expires inactive threads after `THREAD_TTL_MINUTES` (default `10`)
 
@@ -28,11 +28,11 @@ Optional:
 
 - `DISCORD_GUILD_ID` (optional; used for startup guild sync when `DISCORD_SYNC_COMMANDS=true`)
 - `DISCORD_SYNC_COMMANDS` (default `false`; opt-in startup sync only)
-- `WXO_AGENT_NAME` (default: `pokemon_tcg_agent`)
-- `WXO_AGENT_ID` (optional override; if set, skips agent-name lookup)
+- `WO_AGENT_NAME` (default: `pokemon_tcg_agent`)
+- `WO_AGENT_ID` (optional override; if set, skips agent-name lookup)
 - `THREAD_TTL_MINUTES` (default: `10`)
-- `WXO_BASE_URL`
-- `WXO_API_KEY`
+- `WO_INSTANCE`
+- `WO_API_KEY`
 - `PACK_PG_DSN` (Postgres DSN for pack history persistence)
 - `THREAD_PG_DSN` (optional; defaults to `PACK_PG_DSN` for thread context persistence)
 - `DISCORD_SHARD_COUNT` (optional total shard count; when omitted discord.py auto-detects)
@@ -51,7 +51,7 @@ uv run python bot/discord_wxo_bot.py
 
 ## Notes
 
-- In Docker, set `WXO_BASE_URL` + `WXO_API_KEY` in `.env`.
+- In Docker, set `WO_INSTANCE` + `WO_API_KEY` in `.env`.
 - Outside Docker, if explicit WXO vars are missing, the bot falls back to active ADK env credentials.
 - App-command sync is manual by default. Use owner command (mention-prefix):
   - `@Bot sync` or `@Bot sync global`
