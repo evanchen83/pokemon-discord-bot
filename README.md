@@ -5,26 +5,21 @@ A Discord bot for Pokemon TCG + Pokemon catching, with sharded runtime support, 
 ```mermaid
 flowchart LR
     discord[Discord API]
-    shard0[discord-bot-shard-0]
-    shard1[discord-bot-shard-1]
+    shardGroup[discord-bot-shards 0..N-1]
     postgres[(Postgres)]
     liquibase[Liquibase db-init]
     wxo[watsonx Orchestrate]
     prom[Prometheus]
     grafana[Grafana]
 
-    discord --> shard0
-    discord --> shard1
+    discord --> shardGroup
 
-    shard0 --> postgres
-    shard1 --> postgres
+    shardGroup --> postgres
     liquibase --> postgres
 
-    shard0 --> wxo
-    shard1 --> wxo
+    shardGroup --> wxo
 
-    shard0 --> prom
-    shard1 --> prom
+    shardGroup --> prom
     prom --> grafana
 ```
 
